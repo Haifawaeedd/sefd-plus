@@ -241,8 +241,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Haifaa Owayed**  
 📧 Email: haifawaeed2015@gmail.com  
+🎓 University: howay035@uottawa.ca  
 🔗 LinkedIn: [linkedin.com/in/haifaa-owayed](https://linkedin.com/in/haifaa-owayed)  
-🐙 GitHub: [@haifaa-owayed](https://github.com/haifaa-owayed)
+🐙 GitHub: [@Haifawaeedd](https://github.com/Haifawaeedd)
 
 ---
 

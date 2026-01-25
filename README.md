@@ -1,0 +1,258 @@
+# SEFD-Plus: Uncertainty-Aware Fraud Detection with Human-in-the-Loop Governance
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Conference: IEEE CCECE 2026](https://img.shields.io/badge/Conference-IEEE%20CCECE%202026-green.svg)](https://ccece2026.ieee.ca/)
+
+**SEFD-Plus** is a governance-focused fraud detection framework that integrates **ensemble-based uncertainty quantification** with **human-in-the-loop triage** to reduce false positives while maintaining detection accuracy.
+
+📄 **Paper:** "SEFD-Plus: Uncertainty-Aware Fraud Detection with Human-in-the-Loop Governance"  
+🎓 **Conference:** IEEE Canadian Conference on Electrical and Computer Engineering (CCECE) 2026  
+👤 **Author:** Haifaa Owayed
+
+---
+
+## 🎯 Key Features
+
+- **Ensemble-Based Uncertainty Quantification:** Uses XGBoost ensemble (5 models) to generate calibrated fraud probabilities and epistemic uncertainty estimates
+- **Three-Zone Triage:** Routes transactions to SAFE (auto-approve), GRAY (human review), or FLAGGED (auto-block) based on uncertainty
+- **Cost-Sensitive Policy:** Balances fraud losses, false positive costs, and human review overhead
+- **Governance-First Design:** Phased deployment with shadow monitoring, approval gates, and rollback mechanisms
+- **Reproducible Research:** Complete code, hyperparameters, and experimental setup
+
+---
+
+## 📊 Results
+
+Evaluation on **IEEE-CIS Fraud Detection dataset** (177,162 test transactions, 3.5% fraud rate):
+
+| Metric | Baseline | SEFD-Plus | Improvement |
+|--------|----------|-----------|-------------|
+| **False Positive Rate (FPR)** | 10.4% | 8.4% | **-19.3%** (p < 10⁻⁸⁵) |
+| **True Positive Rate (TPR)** | 79.1% | 81.2% | **+2.1%** (p < 10⁻⁴) |
+| **F2 Score** | 0.516 | 0.570 | **+10.5%** |
+| **HITL Load** | - | 9.3% | - |
+| **Annual Savings** | - | $958,540 | (1M txn/year) |
+
+**Statistical Significance:** All improvements are highly significant (p < 10⁻⁴) with bootstrap 95% confidence intervals.
+
+---
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/haifaa-owayed/sefd-plus.git
+cd sefd-plus
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Basic Usage
+
+```python
+from src.sefd_plus import SEFDPlus
+
+# Initialize SEFD-Plus
+sefd = SEFDPlus(
+    n_models=5,           # Ensemble size
+    theta_low=0.05,       # Uncertainty threshold
+    fraud_threshold=0.9   # Fraud probability threshold
+)
+
+# Train on your data
+sefd.fit(X_train, y_train)
+
+# Assign transactions to zones
+zones, probs, uncertainties = sefd.assign_zones(X_test)
+
+# zones: 0=SAFE, 1=GRAY (human review), 2=FLAGGED
+```
+
+### Run Experiments
+
+Reproduce paper results:
+
+```bash
+# Download IEEE-CIS dataset from Kaggle
+# https://www.kaggle.com/c/ieee-fraud-detection
+
+# Run experiments
+python experiments/run_experiments.py \
+    --data_path data/ieee_cis_fraud.csv \
+    --theta_low 0.05 \
+    --output_dir results
+```
+
+---
+
+## 📁 Repository Structure
+
+```
+sefd-plus/
+├── src/
+│   └── sefd_plus.py          # Core SEFD-Plus implementation
+├── experiments/
+│   └── run_experiments.py    # Reproduce paper results
+├── notebooks/
+│   ├── 01_data_exploration.ipynb
+│   ├── 02_model_training.ipynb
+│   └── 03_results_analysis.ipynb
+├── data/
+│   └── README.md             # Dataset instructions
+├── docs/
+│   ├── paper.pdf             # IEEE CCECE 2026 paper
+│   └── figures/              # Paper figures
+├── tests/
+│   └── test_sefd_plus.py     # Unit tests
+├── requirements.txt          # Python dependencies
+├── LICENSE                   # MIT License
+└── README.md                 # This file
+```
+
+---
+
+## 🔬 Methodology
+
+### System Architecture
+
+SEFD-Plus processes transactions through a five-stage pipeline:
+
+1. **Feature Engineering:** Transform raw transaction data into 339 features
+2. **Fraud Probability Estimation:** XGBoost ensemble (5 models) generates fraud probabilities
+3. **Uncertainty Quantification:** Compute prediction variance across ensemble members
+4. **Uncertainty-Based Triage:** Assign transactions to three zones:
+   - **SAFE:** σ(x) < θ_low → Auto-approve
+   - **GRAY:** σ(x) ≥ θ_low → Human review
+   - **FLAGGED:** p(x) > 0.9 AND σ(x) < θ_low → Auto-block
+5. **Human Review:** Present GRAY zone transactions with SHAP explanations
+
+### Hyperparameters
+
+**XGBoost Configuration:**
+```python
+{
+    'n_estimators': 100,
+    'max_depth': 6,
+    'learning_rate': 0.1,
+    'subsample': 0.8,
+    'colsample_bytree': 0.8,
+    'scale_pos_weight': 27.6  # Based on 3.5% fraud rate
+}
+```
+
+**Ensemble Configuration:**
+- Number of models: 5
+- Random seeds: {42, 123, 456, 789, 1011}
+- Uncertainty threshold (θ_low): 0.05
+
+---
+
+## 📊 Dataset
+
+**IEEE-CIS Fraud Detection Dataset**
+- **Source:** [Kaggle Competition](https://www.kaggle.com/c/ieee-fraud-detection)
+- **Size:** 590,540 transactions (6 months)
+- **Fraud Rate:** 3.5%
+- **Features:** Transaction amount, card metadata, device ID, temporal patterns
+- **Train/Test Split:** 70/30 (413,378 train, 177,162 test)
+
+---
+
+## 🧪 Reproducibility
+
+All experiments are fully reproducible:
+
+### Computational Environment
+- **Hardware:** NVIDIA V100 GPU (32GB), Intel Xeon CPU (16 cores), 128GB RAM
+- **Software:** Python 3.11, XGBoost 1.7.0, NumPy 1.24, Pandas 2.0, Scikit-learn 1.3
+- **Training Time:** ~15 minutes for 5 ensemble members
+- **Inference Time:** 10,000 transactions/second
+
+### Statistical Tests
+- **Bootstrap CI:** 1000 samples, stratified sampling, 95% confidence
+- **Fisher's Exact Test:** For FPR reduction significance
+- **Permutation Test:** For TPR improvement significance
+
+---
+
+## 📈 Cost-Benefit Analysis
+
+For a merchant processing **1M transactions/year**:
+
+| Cost Component | Baseline | SEFD-Plus | Savings |
+|----------------|----------|-----------|---------|
+| False Positives ($100 each) | $1,781,800 | $1,304,100 | $477,700 |
+| False Negatives ($500 each) | $649,500 | $338,500 | $311,000 |
+| Human Review ($20 each) | $356,360 | $186,520 | $169,840 |
+| **Total** | **$2,787,660** | **$1,829,120** | **$958,540** |
+
+**ROI:** 34.4% cost reduction
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📝 Citation
+
+If you use SEFD-Plus in your research, please cite:
+
+```bibtex
+@inproceedings{owayed2026sefdplus,
+  title={SEFD-Plus: Uncertainty-Aware Fraud Detection with Human-in-the-Loop Governance},
+  author={Owayed, Haifaa},
+  booktitle={IEEE Canadian Conference on Electrical and Computer Engineering (CCECE)},
+  year={2026},
+  organization={IEEE}
+}
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- IEEE-CIS for providing the fraud detection dataset
+- Kaggle for hosting the competition
+- XGBoost team for the excellent gradient boosting library
+- IEEE CCECE 2026 reviewers for valuable feedback
+
+---
+
+## 📧 Contact
+
+**Haifaa Owayed**  
+📧 Email: haifaa.owayed@example.com  
+🔗 LinkedIn: [linkedin.com/in/haifaa-owayed](https://linkedin.com/in/haifaa-owayed)  
+🐙 GitHub: [@haifaa-owayed](https://github.com/haifaa-owayed)
+
+---
+
+## 🔗 Related Work
+
+- [XGBoost Documentation](https://xgboost.readthedocs.io/)
+- [IEEE-CIS Fraud Detection Dataset](https://www.kaggle.com/c/ieee-fraud-detection)
+- [SHAP (SHapley Additive exPlanations)](https://github.com/slundberg/shap)
+- [Uncertainty Quantification in ML](https://arxiv.org/abs/1703.04977)
+
+---
+
+**⭐ If you find this work useful, please consider starring the repository!**

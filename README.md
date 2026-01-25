@@ -240,7 +240,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📧 Contact
 
 **Haifaa Owayed**  
-📧 Email: haifaa.owayed@example.com  
+📧 Email: haifawaeed2015@gmail.com  
 🔗 LinkedIn: [linkedin.com/in/haifaa-owayed](https://linkedin.com/in/haifaa-owayed)  
 🐙 GitHub: [@haifaa-owayed](https://github.com/haifaa-owayed)
 

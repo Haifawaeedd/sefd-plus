@@ -2,23 +2,23 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Conference: IEEE CCECE 2026](https://img.shields.io/badge/Conference-IEEE%20CCECE%202026-green.svg)](https://ccece2026.ieee.ca/)
+[![Conference](https://img.shields.io/badge/Conference-IEEE%20CCECE%202026-green.svg)](https://ccece2026.ieee.ca/)
 
-**SEFD-Plus** is a governance-focused fraud detection framework that integrates **ensemble-based uncertainty quantification** with **human-in-the-loop triage** to reduce false positives while maintaining detection accuracy.
+SEFD-Plus is a governance-focused fraud detection framework that integrates ensemble-based uncertainty quantification with human-in-the-loop triage to reduce false positives while maintaining detection accuracy.
 
-📄 **Paper:** "SEFD-Plus: Uncertainty-Aware Fraud Detection with Human-in-the-Loop Governance"  
-🎓 **Conference:** IEEE Canadian Conference on Electrical and Computer Engineering (CCECE) 2026  
-👤 **Author:** Haifaa Owayed
+**📄 Paper:** "SEFD-Plus: Uncertainty-Aware Fraud Detection with Human-in-the-Loop Governance"  
+**🎓 Conference:** IEEE Canadian Conference on Electrical and Computer Engineering (CCECE) 2026  
+**👤 Author:** Haifaa Owayed
 
 ---
 
 ## 🎯 Key Features
 
-- **Ensemble-Based Uncertainty Quantification:** Uses XGBoost ensemble (5 models) to generate calibrated fraud probabilities and epistemic uncertainty estimates
-- **Three-Zone Triage:** Routes transactions to SAFE (auto-approve), GRAY (human review), or FLAGGED (auto-block) based on uncertainty
-- **Cost-Sensitive Policy:** Balances fraud losses, false positive costs, and human review overhead
-- **Governance-First Design:** Phased deployment with shadow monitoring, approval gates, and rollback mechanisms
-- **Reproducible Research:** Complete code, hyperparameters, and experimental setup
+- **Ensemble-Based Uncertainty Quantification**: Uses XGBoost ensemble (5 models) to generate calibrated fraud probabilities and epistemic uncertainty estimates
+- **Three-Zone Triage**: Routes transactions to SAFE (auto-approve), GRAY (human review), or FLAGGED (auto-block) based on uncertainty
+- **Cost-Sensitive Policy**: Balances fraud losses, false positive costs, and human review overhead
+- **Governance-First Design**: Phased deployment with shadow monitoring, approval gates, and rollback mechanisms
+- **Reproducible Research**: Complete code, hyperparameters, and experimental setup
 
 ---
 
@@ -28,11 +28,11 @@ Evaluation on **IEEE-CIS Fraud Detection dataset** (177,162 test transactions, 3
 
 | Metric | Baseline | SEFD-Plus | Improvement |
 |--------|----------|-----------|-------------|
-| **False Positive Rate (FPR)** | 10.4% | 8.4% | **-19.3%** (p < 10⁻⁸⁵) |
+| **False Positive Rate (FPR)** | 10.42% | 8.4% | **-19.3%** (p < 10⁻⁸⁵) |
 | **True Positive Rate (TPR)** | 79.1% | 81.2% | **+2.1%** (p < 10⁻⁴) |
 | **F2 Score** | 0.516 | 0.570 | **+10.5%** |
 | **HITL Load** | - | 9.3% | - |
-| **Annual Savings** | - | $958,540 | (1M txn/year) |
+| **Annual Savings** | - | **$815,540** | (1M txn/year) |
 
 **Statistical Significance:** All improvements are highly significant (p < 10⁻⁴) with bootstrap 95% confidence intervals.
 
@@ -44,7 +44,7 @@ Evaluation on **IEEE-CIS Fraud Detection dataset** (177,162 test transactions, 3
 
 ```bash
 # Clone repository
-git clone https://github.com/haifaa-owayed/sefd-plus.git
+git clone https://github.com/Haifawaeedd/sefd-plus.git
 cd sefd-plus
 
 # Install dependencies
@@ -93,24 +93,30 @@ python experiments/run_experiments.py \
 
 ```
 sefd-plus/
+├── paper/
+│   ├── SEFD-Plus-WITH-GITHUB-LINK.pdf    # IEEE CCECE 2026 paper
+│   └── SEFD-Plus-WITH-GITHUB-LINK.docx   # Editable version
+├── figures/
+│   ├── Figure1_Confusion_Matrices.png    # Performance comparison
+│   ├── Figure2_Zone_Distribution.png     # Transaction distribution
+│   ├── Figure3_Cost_Comparison.png       # Cost-benefit analysis
+│   ├── Figure4_System_Architecture.png   # System pipeline
+│   └── Figure5_Performance_Metrics.png   # Metrics visualization
 ├── src/
-│   └── sefd_plus.py          # Core SEFD-Plus implementation
+│   └── sefd_plus.py                      # Core SEFD-Plus implementation
 ├── experiments/
-│   └── run_experiments.py    # Reproduce paper results
+│   └── run_experiments.py                # Reproduce paper results
 ├── notebooks/
 │   ├── 01_data_exploration.ipynb
 │   ├── 02_model_training.ipynb
 │   └── 03_results_analysis.ipynb
 ├── data/
-│   └── README.md             # Dataset instructions
-├── docs/
-│   ├── paper.pdf             # IEEE CCECE 2026 paper
-│   └── figures/              # Paper figures
+│   └── README.md                         # Dataset instructions
 ├── tests/
-│   └── test_sefd_plus.py     # Unit tests
-├── requirements.txt          # Python dependencies
-├── LICENSE                   # MIT License
-└── README.md                 # This file
+│   └── test_sefd_plus.py                 # Unit tests
+├── requirements.txt                      # Python dependencies
+├── LICENSE                               # MIT License
+└── README.md                             # This file
 ```
 
 ---
@@ -121,18 +127,21 @@ sefd-plus/
 
 SEFD-Plus processes transactions through a five-stage pipeline:
 
-1. **Feature Engineering:** Transform raw transaction data into 339 features
-2. **Fraud Probability Estimation:** XGBoost ensemble (5 models) generates fraud probabilities
-3. **Uncertainty Quantification:** Compute prediction variance across ensemble members
-4. **Uncertainty-Based Triage:** Assign transactions to three zones:
-   - **SAFE:** σ(x) < θ_low → Auto-approve
-   - **GRAY:** σ(x) ≥ θ_low → Human review
-   - **FLAGGED:** p(x) > 0.9 AND σ(x) < θ_low → Auto-block
-5. **Human Review:** Present GRAY zone transactions with SHAP explanations
+1. **Feature Engineering**: Transform raw transaction data into 339 features
+2. **Fraud Probability Estimation**: XGBoost ensemble (5 models) generates fraud probabilities
+3. **Uncertainty Quantification**: Compute prediction variance across ensemble members
+4. **Uncertainty-Based Triage**: Assign transactions to three zones:
+   - **SAFE**: σ(x) < θ_low → Auto-approve
+   - **GRAY**: σ(x) ≥ θ_low → Human review
+   - **FLAGGED**: p(x) > 0.9 AND σ(x) < θ_low → Auto-block
+5. **Human Review**: Present GRAY zone transactions with SHAP explanations
+
+![System Architecture](figures/Figure4_System_Architecture.png)
 
 ### Hyperparameters
 
 **XGBoost Configuration:**
+
 ```python
 {
     'n_estimators': 100,
@@ -145,6 +154,7 @@ SEFD-Plus processes transactions through a five-stage pipeline:
 ```
 
 **Ensemble Configuration:**
+
 - Number of models: 5
 - Random seeds: {42, 123, 456, 789, 1011}
 - Uncertainty threshold (θ_low): 0.05
@@ -154,11 +164,12 @@ SEFD-Plus processes transactions through a five-stage pipeline:
 ## 📊 Dataset
 
 **IEEE-CIS Fraud Detection Dataset**
-- **Source:** [Kaggle Competition](https://www.kaggle.com/c/ieee-fraud-detection)
-- **Size:** 590,540 transactions (6 months)
-- **Fraud Rate:** 3.5%
-- **Features:** Transaction amount, card metadata, device ID, temporal patterns
-- **Train/Test Split:** 70/30 (413,378 train, 177,162 test)
+
+- **Source**: [Kaggle Competition](https://www.kaggle.com/c/ieee-fraud-detection)
+- **Size**: 590,540 transactions (6 months)
+- **Fraud Rate**: 3.5%
+- **Features**: Transaction amount, card metadata, device ID, temporal patterns
+- **Train/Test Split**: 70/30 (413,378 train, 177,162 test)
 
 ---
 
@@ -167,15 +178,17 @@ SEFD-Plus processes transactions through a five-stage pipeline:
 All experiments are fully reproducible:
 
 ### Computational Environment
-- **Hardware:** NVIDIA V100 GPU (32GB), Intel Xeon CPU (16 cores), 128GB RAM
-- **Software:** Python 3.11, XGBoost 1.7.0, NumPy 1.24, Pandas 2.0, Scikit-learn 1.3
-- **Training Time:** ~15 minutes for 5 ensemble members
-- **Inference Time:** 10,000 transactions/second
+
+- **Hardware**: NVIDIA V100 GPU (32GB), Intel Xeon CPU (16 cores), 128GB RAM
+- **Software**: Python 3.11, XGBoost 1.7.0, NumPy 1.24, Pandas 2.0, Scikit-learn 1.3
+- **Training Time**: ~15 minutes for 5 ensemble members
+- **Inference Time**: 10,000 transactions/second
 
 ### Statistical Tests
-- **Bootstrap CI:** 1000 samples, stratified sampling, 95% confidence
-- **Fisher's Exact Test:** For FPR reduction significance
-- **Permutation Test:** For TPR improvement significance
+
+- **Bootstrap CI**: 1000 samples, stratified sampling, 95% confidence
+- **Fisher's Exact Test**: For FPR reduction significance
+- **Permutation Test**: For TPR improvement significance
 
 ---
 
@@ -187,10 +200,12 @@ For a merchant processing **1M transactions/year**:
 |----------------|----------|-----------|---------|
 | False Positives ($100 each) | $1,781,800 | $1,304,100 | $477,700 |
 | False Negatives ($500 each) | $649,500 | $338,500 | $311,000 |
-| Human Review ($20 each) | $356,360 | $186,520 | $169,840 |
-| **Total** | **$2,787,660** | **$1,829,120** | **$958,540** |
+| Human Review ($20 each) | $356,360 | $329,520 | $26,840 |
+| **Total** | **$2,787,660** | **$1,972,120** | **$815,540** |
 
-**ROI:** 34.4% cost reduction
+**ROI: 29.2% cost reduction**
+
+![Cost Comparison](figures/Figure3_Cost_Comparison.png)
 
 ---
 
@@ -239,11 +254,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-**Haifaa Owayed**  
-📧 Email: haifawaeed2015@gmail.com  
-🎓 University: howay035@uottawa.ca  
-🔗 LinkedIn: [linkedin.com/in/haifaa-owayed-765297132](https://www.linkedin.com/in/haifaa-owayed-765297132)  
-🐙 GitHub: [@Haifawaeedd](https://github.com/Haifawaeedd)
+**Haifaa Owayed**
+
+- 📧 Email: haifawaeed2015@gmail.com
+- 🎓 University: howay035@uottawa.ca
+- 🔗 LinkedIn: [linkedin.com/in/haifaa-owayed-765297132](https://linkedin.com/in/haifaa-owayed-765297132)
+- 🐙 GitHub: [@Haifawaeedd](https://github.com/Haifawaeedd)
 
 ---
 
@@ -252,8 +268,34 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [XGBoost Documentation](https://xgboost.readthedocs.io/)
 - [IEEE-CIS Fraud Detection Dataset](https://www.kaggle.com/c/ieee-fraud-detection)
 - [SHAP (SHapley Additive exPlanations)](https://github.com/slundberg/shap)
-- [Uncertainty Quantification in ML](https://arxiv.org/abs/1703.04977)
+- [Uncertainty Quantification in ML](https://arxiv.org/abs/1906.02530)
 
 ---
 
-**⭐ If you find this work useful, please consider starring the repository!**
+⭐ **If you find this work useful, please consider starring the repository!**
+
+---
+
+## 📊 Three-Zone Triage Results
+
+| Zone | Count | Percentage | Fraud Rate | Enrichment | Action |
+|------|-------|------------|------------|------------|--------|
+| **SAFE** | 144,149 | 81.4% | 2.8% | 0.80x | Auto-approve |
+| **GRAY** | 16,476 | 9.3% | 3.3% | 0.95x | Human review |
+| **FLAGGED** | 16,537 | 9.3% | 31.7% | 9.06x | Auto-block |
+
+![Zone Distribution](figures/Figure2_Zone_Distribution.png)
+
+---
+
+## 📈 Performance Comparison
+
+![Confusion Matrices](figures/Figure1_Confusion_Matrices.png)
+
+![Performance Metrics](figures/Figure5_Performance_Metrics.png)
+
+---
+
+**Last Updated:** January 2026  
+**Paper Status:** Submitted to IEEE CCECE 2026  
+**Code Status:** Available with complete implementation

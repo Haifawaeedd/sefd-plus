@@ -36,6 +36,9 @@ Evaluation on **IEEE-CIS Fraud Detection dataset** (177,162 test transactions, 3
 
 **Statistical Significance:** All improvements are highly significant (p < 10⁻⁴) with bootstrap 95% confidence intervals.
 
+**Note:** Prior commit message contained a formatting typo; actual annual savings are **$815,540** as documented throughout this repository and the accompanying paper.
+
+
 ---
 
 ## 🚀 Quick Start

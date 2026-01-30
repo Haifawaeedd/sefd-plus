@@ -41,6 +41,42 @@ Evaluation on **IEEE-CIS Fraud Detection dataset** (177,162 test transactions, 3
 
 ---
 
+
+## 🌍 Cross-Dataset Generalization
+
+To validate SEFD-Plus's governance stability across different fraud detection contexts, we conducted a post-submission study on the **Credit Card Fraud Detection dataset** (Kaggle).
+
+### Why This Matters
+
+SEFD-Plus is designed as a **governance framework**, not a dataset-specific optimization. This study demonstrates:
+- Robust behavior without retraining or tuning
+- Automatic adaptation of human review burden
+- Conservative false positive control across contexts
+
+### Generalization Study Results
+
+| Dataset | Fraud Rate | F2 Score | Gray Zone (HITL) | False Positives |
+|---------|------------|----------|------------------|-----------------|
+| **IEEE-CIS** | 3.5% | 0.570 | 9.3% | 8.4% FPR |
+| **Credit Card (Kaggle)** | 0.17% | 0.792 | 0.2% | 0.02% FPR |
+
+**Key Observations:**
+- ✅ **20x lower fraud rate** → System automatically reduces human review burden (9.3% → 0.2%)
+- ✅ **Extremely low false positives** → Only 18 FP out of 85,305 legitimate transactions
+- ✅ **No tuning required** → Same hyperparameters work effectively across datasets
+- ✅ **Governance-friendly** → Conservative behavior maintained in both contexts
+
+### Interpretation
+
+The dramatic reduction in Gray Zone size (9.3% → 0.2%) is **not a bug but a feature**:
+- Lower fraud rate → Fewer ambiguous cases near decision boundary
+- Cleaner features (PCA-transformed) → Lower ensemble variance
+- Conservative threshold (θ_low = 0.05) → Only truly uncertain cases flagged
+
+This validates SEFD-Plus's core thesis: **uncertainty-aware governance provides robust fraud detection without dataset-specific tuning**.
+
+📄 **Detailed Documentation:** [docs/generalization.md](docs/generalization.md)
+
 ## 🚀 Quick Start
 
 ### Installation

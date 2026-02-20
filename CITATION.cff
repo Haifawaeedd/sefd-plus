@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "SEFD-Plus: Uncertainty-Aware Fraud Detection with Human-in-the-Loop Governance"
+authors:
+  - family-names: "Owayed"
+    given-names: "Haifaa"
+    email: "haifawaeed2015@gmail.com"
+    affiliation: "University of Ottawa"
+    orcid: ""
+abstract: >-
+  SEFD-Plus is a governance-focused fraud detection framework that integrates
+  ensemble-based uncertainty quantification with human-in-the-loop triage to
+  reduce false positives while maintaining detection accuracy. The framework
+  uses XGBoost ensemble models to generate calibrated fraud probabilities and
+  epistemic uncertainty estimates, routing transactions through a three-zone
+  triage system (SAFE, GRAY, FLAGGED) based on uncertainty thresholds.
+keywords:
+  - fraud detection
+  - uncertainty quantification
+  - human-in-the-loop
+  - machine learning
+  - XGBoost
+  - ensemble learning
+  - cost-sensitive learning
+  - governance
+  - IEEE CCECE 2026
+license: MIT
+repository-code: "https://github.com/Haifawaeedd/sefd-plus"
+preferred-citation:
+  type: conference-paper
+  title: "SEFD-Plus: Uncertainty-Aware Fraud Detection with Human-in-the-Loop Governance"
+  authors:
+    - family-names: "Owayed"
+      given-names: "Haifaa"
+  collection-title: "IEEE Canadian Conference on Electrical and Computer Engineering (CCECE)"
+  year: 2026
+  publisher:
+    name: "IEEE"
